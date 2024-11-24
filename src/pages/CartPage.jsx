@@ -14,6 +14,13 @@ const CartPage = () => {
     0
   );
 
+  const handleIncreaseQuantity = (id) => {
+    dispatch({ type: "INCREMENT_CART_PRODUCT", payload: { id } });
+  };
+
+  const handleDecreaseQuantity = (id) => {
+    dispatch({ type: "DECREMENT_CART_PRODUCT", payload: { id } });
+  };
   // Handle remove item
   const handleRemoveItem = (id) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: id });
@@ -45,6 +52,30 @@ const CartPage = () => {
                   <p className="text-gray-500">${item.price} each</p>
                   <p className="text-gray-500">Quantity: {item.quantity}</p>
                 </div>
+                <div className="flex flex-1 items-center space-x-2">
+                  <button
+                    onClick={() => handleDecreaseQuantity(item.id)}
+                    type="button"
+                    className="text-gray-600 hover:text-gray-900 focus:outline-none rounded-full bg-gray-200 px-2 py-1"
+                  >
+                    -
+                  </button>
+
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    className="w-16 text-center border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+                  />
+
+                  <button
+                    onClick={() => handleIncreaseQuantity(item.id)}
+                    type="button"
+                    className="text-gray-600 hover:text-gray-900 focus:outline-none rounded-full bg-gray-200 px-2 py-1"
+                  >
+                    +
+                  </button>
+                </div>
+
                 <button
                   onClick={() => handleRemoveItem(item.id)}
                   className="text-pink-500 hover:text-pink-700"

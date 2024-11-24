@@ -1,24 +1,31 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const ProductDetails = () => {
+  const [inputProductNumber, setInputProductNumber] = useState(1);
   const { state: product } = useLocation();
   const { state, dispatch } = useCart();
 
   const findProduct =
     state.carts &&
     state.carts.find((cartProduct) => cartProduct.id === product.id);
+
   const handleCart = (product) => {
-    dispatch({ type: "ADD_TO_CART", payload: product });
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: { ...product, quantity: inputProductNumber },
+    });
+    setInputProductNumber(1);
   };
 
-  const cartProductIncrement = (id) => {
-    dispatch({ type: "INCREMENT_CART_PRODUCT", payload: { id } });
-  };
-  const cartProductDecrement = (id) => {
-    dispatch({ type: "DECREMENT_CART_PRODUCT", payload: { id } });
-  };
+  // const cartProductIncrement = (id) => {
+  //   dispatch({ type: "INCREMENT_CART_PRODUCT", payload: { id } });
+  // };
+  // const cartProductDecrement = (id) => {
+  //   dispatch({ type: "DECREMENT_CART_PRODUCT", payload: { id } });
+  // };
+
   return (
     <div className="container mx-auto p-6 max-w-4xl">
       <h1 className="text-4xl font-bold text-center text-pink-500 mb-10">
@@ -50,23 +57,37 @@ const ProductDetails = () => {
             <p>
               <span className="font-semibold">SKU:</span> {product.sku}
             </p>
-            {findProduct ? (
-              <div>
-                <button onClick={() => cartProductIncrement(product.id)}>
-                  +
-                </button>
-                <input
-                  type="number"
-                  value={findProduct ? findProduct.quantity : 0}
-                  onChange={() => {}}
-                />
-                <button onClick={() => cartProductDecrement(product.id)}>
-                  -
-                </button>
-              </div>
-            ) : (
-              <button onClick={() => handleCart(product)}>Add To Cart</button>
-            )}
+            <div className="flex items-center space-x-2">
+              <button
+                type="button"
+                className="text-gray-600 hover:text-gray-900 focus:outline-none rounded-full bg-gray-200 px-2 py-1"
+                onClick={() => setInputProductNumber((number) => number - 1)}
+              >
+                -
+              </button>
+
+              <input
+                type="number"
+                value={inputProductNumber}
+                onChange={(e) => setInputProductNumber(e.target.value)}
+                className="w-16 text-center border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+              />
+
+              <button
+                type="button"
+                className="text-gray-600 hover:text-gray-900 focus:outline-none rounded-full bg-gray-200 px-2 py-1"
+                onClick={() => setInputProductNumber((number) => number + 1)}
+              >
+                +
+              </button>
+            </div>
+
+            <button
+              className="bg-green-600 px-6 py-3 text-white text-lg rounded-md"
+              onClick={() => handleCart(product)}
+            >
+              Add To Cart
+            </button>
           </div>
         </div>
       </div>

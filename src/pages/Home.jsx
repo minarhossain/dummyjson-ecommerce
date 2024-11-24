@@ -10,7 +10,7 @@ const Home = () => {
   const { dispatch } = useCart();
   // console.log(dispatch);
   const handleCart = (product) => {
-    dispatch({ type: "ADD_TO_CART", payload: product });
+    dispatch({ type: "ADD_TO_CART", payload: { ...product, quantity: 1 } });
   };
   if (loading) return <LoadingPage />;
   return (
